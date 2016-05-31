@@ -5,9 +5,19 @@
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        {# Add bootstrapp css dependency #}
+        <link rel="stylesheet"href="{{ asset('assets/vendor/bootstrap/dist/css/bootstrap.min.css') }}">
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body style="padding-top: 50px">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container"></div>
+        </nav>
+        <div class="container">
+            <div style="padding-top: 40px">
+            {% block body %}{% endblock %}
+            </div>
+        </div>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

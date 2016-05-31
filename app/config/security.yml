@@ -23,6 +23,7 @@ security:
             pattern: ^/
             http_basic: ~
             provider: user_provider
+            anonymous: ~
             # activate different ways to authenticate
 
             # http_basic: ~
