@@ -23,7 +23,7 @@ gulp.task('images', function () {
 
 gulp.task('fonts', function () {
     return gulp.src([bower_components_path + '/bootstrap/fonts/*'])
-        .pipe(gulp.dest('web/fonts/'))
+        .pipe(gulp.dest(assets_path + '/fonts/'))
 });
 
 gulp.task('lib-js', function() {

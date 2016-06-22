@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -63,5 +64,46 @@ class DefaultController extends Controller
      */
     public function registrationSuccess(Request $request) {
         return new Response('You have been registered successfully');
+    }
+
+    /**
+     * @Route("/users", name="get_all_users", methods={"GET"})
+     */
+    public function getAllUsers() {
+        $users = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
+
+        $data = array();
+        foreach ($users as $user) {
+            $entry = array();
+
+            $entry['firstName'] = $user->getFirstName();
+            $entry['lastName'] = $user->getLastName();
+            $entry['email'] = $user->getEmail();
+            $entry['username'] = $user->getUsername();
+
+            $data[] = $entry;
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/user", name="post_user", methods={"POST"})
+     */
+    public function postUser(Request $request) {
+        $userData = $request->request;
+
+        $user = new User();
+        $user->setFirstName($userData->get('firstName'));
+        $user->setLastName($userData->get('lastName'));
+        $user->setEmail($userData->get('email'));
+        $user->setUsername($userData->get('username'));
+        $user->setPassword($userData->get('password'));
+
+        $this->getDoctrine()->getEntityManager()->persist($user);
+        $this->getDoctrine()->getEntityManager()->flush();
+
+        $data = array('status' => 200, $user);
+        return new JsonResponse($data);
     }
 }
